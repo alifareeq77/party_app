@@ -13,14 +13,16 @@ import environ
 from pathlib import Path
 from datetime import timedelta
 import environ
+from django.core.asgi import get_asgi_application
+
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
 SMTP = env("SMTP")
-
+# django_asgi_app = get_asgi_application()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# ASGI_APPLICATION = 'backend_core.asgi.application'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -38,8 +40,18 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
-
+# Daphne
+ASGI_APPLICATION = 'backend_core.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,8 +61,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     "corsheaders",
-    'party_app',
     'users_app',
+    'chat_app',
+    # 'daphne',
+
 ]
 
 MIDDLEWARE = [
