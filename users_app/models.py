@@ -10,6 +10,10 @@ class UserAccountManager(BaseUserManager):
         user.set_password(password)
         user.save()
         return user
+    
+    def create_superuser(self, username, email, password, **extra_fields):
+
+        return self.create_user(email,username, password, is_staff=True,is_active=True,is_superuser=True, **extra_fields)
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
