@@ -6,4 +6,5 @@ urlpatterns = [
     # path('auth/password/reset/confirm/<uid>/<token>', password_reset_view, name='password_reset'),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    
 ]
