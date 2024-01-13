@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
@@ -12,3 +13,6 @@ class VideoModelView(ModelViewSet):
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'post', 'option']
 
+
+def index_view(request):
+    return render(request, 'video_app/index.html')

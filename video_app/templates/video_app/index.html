@@ -1,0 +1,35 @@
+<!-- Your HTML template -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Example</title>
+</head>
+<body>
+    <div id="output"></div>
+
+    <script>
+        const socket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/some_path/'
+
+        );
+        socket.onopen = (event) => {
+            console.log('WebSocket connection opened:', event);
+        };
+
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const value = data.value;
+
+            // Update the div with the received value
+            document.getElementById('output').innerText = value;
+        };
+
+        socket.onclose = (event) => {
+            console.log('WebSocket connection closed:', event);
+        };
+    </script>
+</body>
+</html>
