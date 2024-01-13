@@ -6,9 +6,8 @@ from .views import PartyRoomView, SlugView, SlugViewData
 
 router = routers.SimpleRouter()
 
-router.register('slug',SlugView,basename='slug')
+router.register('slug', SlugView, basename='slug')
 urlpatterns = [
-    path('room/<slug:slug>', PartyRoomView.as_view(), ),
-path('slug/<int:id>/', SlugViewData.as_view(), name='slug')
-]+router.urls
-
+    path('room/<slug:slug>', PartyRoomView.as_view()),
+    path('slug/<int:id>/', SlugViewData.as_view(), name='slug'),
+] + router.urls

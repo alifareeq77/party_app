@@ -5,10 +5,9 @@ from party_app.models import Party
 from video_app.models import Video
 from video_app.serializers import VideoSerializer
 
-
 class VideoModelView(ModelViewSet):
+    # ViewSet for the Video model
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'post', 'option']
-

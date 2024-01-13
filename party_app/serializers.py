@@ -4,6 +4,7 @@ from video_app.serializers import ReadVideoSerializer, VideoSerializer
 
 
 class PartySerializer(serializers.ModelSerializer):
+    # Serializer for the Party model.
     creator = serializers.HiddenField(default=serializers.CurrentUserDefault())
     video = ReadVideoSerializer()
 
@@ -13,4 +14,5 @@ class PartySerializer(serializers.ModelSerializer):
 
 
 class ReadVideo(serializers.Serializer):
+    # Serializer for reading video details.
     id = serializers.IntegerField()

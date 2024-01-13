@@ -1,10 +1,10 @@
 from django.db import models
-
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
-
 class UserAccountManager(BaseUserManager):
+    # Custom manager for UserAccount
     def create_user(self, password, username, email, **kwargs):
+        # Create a regular user
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **kwargs)
         user.set_password(password)
@@ -12,6 +12,7 @@ class UserAccountManager(BaseUserManager):
         return user
 
     def create_superuser(self, password, username, email, **kwargs):
+        # Create a superuser with staff and admin privileges
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **kwargs)
         user.set_password(password)
@@ -21,8 +22,8 @@ class UserAccountManager(BaseUserManager):
         user.save()
         return user
 
-
 class UserAccount(AbstractBaseUser, PermissionsMixin):
+    # Custom User Account model
     username = models.CharField(unique=True, max_length=256)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=145, null=True)
