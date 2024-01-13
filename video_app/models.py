@@ -26,9 +26,4 @@ class Video(models.Model):
     description = models.CharField(max_length=255)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     create_datetime = models.DateTimeField(auto_now=True)
-    video_slug = models.SlugField(max_length=500)
 
-    def save(self, *args, **kwargs):
-        self.video_slug = slugify(f"{self.title}{self.create_datetime}")
-        print(self.video_slug)
-        super(Video, self).save(*args, **kwargs)

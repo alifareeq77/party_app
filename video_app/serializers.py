@@ -9,3 +9,9 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ("creator", "video_file", "title", "description", "create_datetime")
+
+
+class ReadVideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = ('id',)
