@@ -2,16 +2,16 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
+from django.template.defaultfilters import slugify
 
 
-
-#function for naming videofiles according to it upload datetime stamp
+# function for naming video files according to it upload datetime stamp
 def upload_to(instance, filename):
     timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
     return f'uploads/{timestamp}_{filename}'
 
 
-#main video model
+# main video model
 class Video(models.Model):
     video_file = models.FileField(
         upload_to=upload_to,
@@ -23,6 +23,12 @@ class Video(models.Model):
         help_text='Upload only MP4, MPG, or MPEG files'
     )
     title = models.CharField(max_length=150, null=False, blank=False)
-    description = models.CharField(max_length=255) 
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    create_datetime = models.DateTimeField(auto_now_add=True)
+    description = models.CharField(max_length=255)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    create_datetime = models.DateTimeField(auto_now=True)
+    video_slug = models.SlugField(max_length=500)
+
+    def save(self, *args, **kwargs):
+        self.video_slug = slugify(f"{self.title}{self.create_datetime}")
+        print(self.video_slug)
+        super(Video, self).save(*args, **kwargs)

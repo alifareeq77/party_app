@@ -86,9 +86,9 @@ DJOSER = {
             'user': 'users_app.serializers.UserCreateSerializer',
             'user_create': 'users_app.serializers.CreateUserSerializer',
         },
-    'PASSWORD_RESET_CONFIRM_URL': 'auth/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': 'auth/users/email/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'auth/users/activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'api/auth/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'api/auth/users/email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'api/auth/users/activate/{uid}/{token}',
 }
 
 TEMPLATES = [
