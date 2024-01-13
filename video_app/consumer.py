@@ -17,7 +17,7 @@ class MyConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         # Assume text_data is a JSON string like '{"value": "some_value"}'
         data = json.loads(text_data)
-        value_to_send = data.get('value', '')
+        value_to_send = data.get('control')
 
         # Send the value back to the client
         await self.channel_layer.group_send(
