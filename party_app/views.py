@@ -32,10 +32,14 @@ class SlugViewData(APIView):
         # For example, you might fetch data from a database or another source
         your_object_data = {
             'id': id,
+
         }
         serializer = ReadVideo(data=your_object_data)
         if serializer.is_valid():
-
+            video = Video.objects.get(id=your_object_data['id'])
+            print(video)
+            p = Party.objects.create(video=video,creator=request.user)
+            p.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
