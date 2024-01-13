@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'users_app',
     'chat_app',
     'video_app',
+    'party_app',
 
 ]
 

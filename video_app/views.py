@@ -3,10 +3,11 @@ from .models import Video
 from .forms import VideoForm  # Create a form for handling video uploads
 from .serializers import VideoSerializer
 from rest_framework import generics
-
+from rest_framework.permissions import IsAuthenticated
 
 
 class VideoUploadView(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
