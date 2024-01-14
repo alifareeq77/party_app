@@ -1,14 +1,10 @@
-from django.template.defaulttags import url
-from django.urls import include, path
+
 from rest_framework import routers
 
-from .views import PartyRoomView, SlugView, SlugViewData
+from .views import PartyRoomView, PartyViewSet
 
 router = routers.SimpleRouter()
+router.register(r'party_generate', PartyViewSet, basename='party_generate')
+router.register(r'party', PartyRoomView, basename='party')
 
-router.register('slug',SlugView,basename='slug')
-urlpatterns = [
-    path('room/<slug:slug>', PartyRoomView.as_view(), ),
-path('slug/<int:id>/', SlugViewData.as_view(), name='slug')
-]+router.urls
-
+urlpatterns = [] + router.urls

@@ -25,7 +25,7 @@ class Party(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     create_datetime = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    state = models.BooleanField(default=False)
+    state = models.BooleanField(default=False,primary_key=True)
 
     # Party Room Slug Generator Fucntion
     def save(self, *args, **kwargs):

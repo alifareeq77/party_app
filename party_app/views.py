@@ -1,45 +1,45 @@
-from django.shortcuts import get_object_or_404, render
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
-
 from video_app.models import Video
-from video_app.serializers import VideoSerializer
+from .custom_permissions import IsOwnerOrReadOnly
 from .models import Party
-from .serializers import PartySerializer, ReadVideo
-from rest_framework import generics, viewsets, status
+from .serializers import ReadVideo, PartySerializer, ReadPartySerializer, UpdatePartySerializer
+from rest_framework import generics, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 
 
-class PartyRoomView(generics.RetrieveAPIView):
+class PartyRoomView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    serializer_class = ReadVideo
-    queryset = Video.objects.all()
-    http_method_names = ['get']
+    queryset = Party.objects.all()
+    http_method_names = ['get', 'put', 'delete']
+    serializer_class = ReadPartySerializer
+    lookup_field = 'slug'
 
-    def get_queryset(self):
-        video_id = Party.objects.filter(slug=self.kwargs.get('slug'))[0].video.id
-        return get_object_or_404(Video, id=video_id)
+    # def get_queryset(self):
+    #     return Party.objects.filter(creator=self.request.user)
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ReadPartySerializer
+        elif self.request.method == "PUT":
+            return UpdatePartySerializer
+
+    def perform_update(self, serializer):
+        serializer.save(partial=True)
 
 
-class SlugView(ModelViewSet):
+class PartyViewSet(viewsets.ModelViewSet):
     model = Party
+    http_method_names = ['post']
+    serializer_class = PartySerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
-
-class SlugViewData(APIView):
-    def get(self, request, id, *args, **kwargs):
-        # Perform any logic to retrieve your object based on the ID
-        # For example, you might fetch data from a database or another source
-        your_object_data = {
-            'id': id,
-
-        }
-        serializer = ReadVideo(data=your_object_data)
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        serializer = PartySerializer(context={"request": request}, data=data)
         if serializer.is_valid():
-            video = Video.objects.get(id=your_object_data['id'])
-            print(video)
-            p = Party.objects.create(video=video,creator=request.user)
-            p.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            print(serializer.validated_data)
+            new_party = Party.objects.create(**serializer.validated_data)
+            print(new_party)
+            new_party.save()
+            return Response(ReadPartySerializer(instance=new_party).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

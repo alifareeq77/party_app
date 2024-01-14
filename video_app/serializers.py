@@ -15,3 +15,9 @@ class ReadVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ('id',)
+
+
+class ShowVideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = "__all__"
