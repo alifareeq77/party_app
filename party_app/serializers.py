@@ -24,8 +24,7 @@ class ReadPartySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Party
-        fields = '__all__'
-        exclude = 'creator'
+        exclude = ('creator',)
 
 
 class ReadVideo(serializers.Serializer):

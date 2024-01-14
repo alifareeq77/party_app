@@ -19,7 +19,6 @@ class VideoModelView(ModelViewSet):
 
     def get_queryset(self):
         queryset = Video.objects.filter(creator=self.request.user)
-
-
+        return queryset
 def index_view(request):
     return render(request, 'video_app/index.html')
